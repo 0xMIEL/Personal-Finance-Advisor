@@ -1,0 +1,13 @@
+{
+  "name": "personal-finance-advisor",
+  "version": "1.0.0",
+  "description": "An application to help you manage your personal finances.",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch --watch-path=. ."
+  },
+  "keywords": [],
+  "author": "CMielczarek",
+  "license": "MIT"
+}

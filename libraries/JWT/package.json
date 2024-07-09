@@ -1,0 +1,10 @@
+{
+    "name": "jwt",
+    "version": "1.0.0",
+    "main": "./src/index.js",
+    "scripts": {},
+    "keywords": [],
+    "author": "CMielczarek",
+    "license": "MIT",
+    "description": "Custom json web token implementation."
+}
