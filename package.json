@@ -2,12 +2,18 @@
   "name": "personal-finance-advisor",
   "version": "1.0.0",
   "description": "An application to help you manage your personal finances.",
-  "main": "app.js",
-  "type": "module",
+  "main": "./src/app.js",
+  "type": "commonjs",
   "scripts": {
     "dev": "node --watch --watch-path=. ."
   },
   "keywords": [],
   "author": "CMielczarek",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "casper-jwt": "^1.0.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mysql2": "^3.10.2"
+  }
 }

@@ -1,11 +1,14 @@
 # Personal-Finance-Advisor documentation
+
 1. **Description**
-    * Language: JavaScript (node.js v20.14.0)
-    * Database: PostgreSQL 
+    * Language: JavaScript (node.js v20.15.1)
+    * Database: MySQL
     * Docker
+
 2. **Launch**
    * Installation from GitHub
    * Running on docker
+
 3. **API documentation**
    * Base URL
      * http://localhost:3000
@@ -14,6 +17,7 @@
      * api/v1/login
      * api/v1/profile
      * api/v1/loans
+     * api/v1/currencies
 ---
 
 ## 1. Description
@@ -23,7 +27,7 @@ The application has the main following functionalities: register, login and make
 
 Technologies:
 * Language: JavaScript (node.js v20.14.0)
-* Database: PostgreSQL
+* Database: MySQL
 * Docker
 
 ---
@@ -65,9 +69,10 @@ Response body:
 {
   "message": "User registered successfully",
   "user": {
-    "id": "integer",
+    "user_id": "integer",
     "username": "string",
-    "email": "string"
+    "email": "string",
+    "created_at": "datetime"
   }
 }
 ```
@@ -116,7 +121,7 @@ Authorization: Bearer <token>
 Response body:
 ```json
 {
-  "id": "integer",
+  "user_id": "integer",
   "username": "string",
   "email": "string"
 }
@@ -144,7 +149,7 @@ Response body:
 {
   "message": "Profile updated successfully",
   "user": {
-    "id": "integer",
+    "user_id": "integer",
     "username": "string",
     "email": "string"
   }
@@ -179,15 +184,15 @@ Request body:
 Response body:
 ```json
 {
-  "id": "integer",
+  "offer_id": "integer",
   "salary":  "float",
   "currency": "string",
-  "loan_term": "integer (months)",
+  "term": "integer (months)",
   "APR": "float",
   "max_value": "float",
-  "installment_amount": "float",
+  "installment": "float",
   "total_interest": "float",
-  "owner_id": "integer"
+  "user_id": "integer"
 }
 ```
 
@@ -222,7 +227,7 @@ Authorization: Bearer <token>
 Response body:
 ```json
 {
-  "loan_offers": [{"id": "integer",
+  "loan_offers": [{"offer_id": "integer",
   "salary":  "float",
   "currency": "string",
   "loan_term": "integer (months)",
@@ -230,7 +235,7 @@ Response body:
   "max_value": "float",
   "installment_amount": "float",
   "total_interest": "float",
-  "owner_id": "integer"}, ...]
+  "user_id": "integer"}, ...]
 }
 ```
 
@@ -253,7 +258,7 @@ Authorization: Bearer <token>
 Response body:
 ```json
 {
-  "id": "integer",
+  "offer_id": "integer",
   "salary":  "float",
   "currency": "string",
   "loan_term": "integer (months)",
@@ -261,7 +266,7 @@ Response body:
   "max_value": "float",
   "installment_amount": "float",
   "total_interest": "float",
-  "owner_id": "integer"
+  "user_id": "integer"
 }
 
 ```
