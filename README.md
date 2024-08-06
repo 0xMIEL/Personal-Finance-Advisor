@@ -44,7 +44,12 @@ cd Personal-Finance-Advisor
 ---
 Run application using docker
 ```
-run docker
+docker compose up
+```
+---
+Stop application using docker
+```
+docker compose down
 ```
 
 ## 3. API Documentation

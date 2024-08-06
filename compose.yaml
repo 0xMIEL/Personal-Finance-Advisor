@@ -1,0 +1,46 @@
+name: personal-finance-advisor
+
+services:
+    mysql:
+        image: mysql:8.4.2
+        container_name: mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: personal_finance_advisor
+
+        volumes:
+            - mysql-data:/var/lib/mysql
+            - ./config:/docker-entrypoint-initdb.d
+
+        networks:
+            - back-tier
+
+    node:
+        build: .
+        container_name: node
+        ports:
+            - '127.0.0.1:5500:5500'
+
+        environment:
+            DB_HOST: mysql
+            DB_USER: user
+            DB_DATABASE: personal_finance_advisor
+            DB_PASSWORD: password
+            PORT: 5500
+
+        volumes:
+            - npm-cache:/root/.npm
+            - ./src:/app/src
+
+        networks:
+            - back-tier
+
+        depends_on:
+            - mysql
+
+volumes:
+    npm-cache:
+    mysql-data:
+
+networks:
+    back-tier:

@@ -2,7 +2,7 @@
 
 ## Database view
 
-![Database schema](./assets/schema.webp)
+![Database schema](../assets/schema.webp)
 
 ## Description
 
@@ -13,7 +13,7 @@ The schema of this database consists of three main tables. The `offers` table ha
 1. **PK**: `offers.currency_symbol` **FK**: `currencies.currency_symbol`
 
     - Between the `users` and `offers` table.
-        - **zero ro many**
+        - **zero or many**
         - Each user can have zero or infinitely many offers.
 
     - Between the `offers` and `users` table.
