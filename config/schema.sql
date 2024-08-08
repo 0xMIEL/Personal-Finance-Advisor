@@ -7,8 +7,7 @@ CREATE TABLE
         user_id INT PRIMARY KEY AUTO_INCREMENT,
         username VARCHAR(50) NOT NULL,
         created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        salt INT,
-        hash BIGINT
+        hash VARCHAR(60)
     );
 
 CREATE TABLE

@@ -30,13 +30,18 @@ services:
 
         volumes:
             - npm-cache:/root/.npm
-            - ./src:/app/src
 
         networks:
             - back-tier
 
         depends_on:
             - mysql
+
+        develop:
+            watch:
+                - path: ./src
+                  target: ./app/src
+                  action: sync+restart
 
 volumes:
     npm-cache:
