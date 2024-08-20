@@ -1,5 +1,5 @@
 import express from 'express'
-import QueryAPi from ''
+import UserModel from './models/user-model'
 
 const start = () => {
 	try {
@@ -8,13 +8,7 @@ const start = () => {
 		app.use(express.json())
 
 		app.post('/api/v1/register', async (req, res) => {
-			const { username, password } = req.body
-			const result = await UserModel.exist(
-				['*'],
-				[['username', '=', `'${username}'`]]
-			)
-			console.log(result)
-			res.send('Register page!')
+			const result = await UserModel.findUser('kacper')
 		})
 
 		const PORT = process.env.PORT || 5500
