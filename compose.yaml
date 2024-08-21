@@ -39,7 +39,7 @@ services:
 
         develop:
             watch:
-                - path: ./src
+                - path: ./dist
                   target: ./app/src
                   action: sync+restart
 
