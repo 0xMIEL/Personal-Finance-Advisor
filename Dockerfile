@@ -10,4 +10,4 @@ COPY ./dist ./src
 
 EXPOSE 5500
 
-CMD [ "node", "." ]
+CMD [ "node", "--watch", "--watch-path=./src", "."]

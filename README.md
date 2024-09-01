@@ -2,24 +2,22 @@
 
 1. **Description**
 
-    - Language: JavaScript (node.js v20.15.1)
-    - Database: MySQL
-    - Docker
+   - Language: JavaScript (node.js v20.16.0)
+   - Database: MySQL
+   - Docker
 
 2. **Launch**
 
-    - Installation from GitHub
-    - Running on docker
+   - Installation from GitHub
+   - Running on docker
 
 3. **API documentation**
-    - Base URL
-        - http://localhost:3000
-    - Endpoints
-        - api/v1/register
-        - api/v1/login
-        - api/v1/profile
-        - api/v1/loans
-        - api/v1/currencies
+   - Base URL
+     - http://localhost:5500
+   - Endpoints
+     - api/v1/offers
+       - api/v1/users
+       - api/v1/currencies
 
 ---
 
@@ -30,9 +28,9 @@ The application has the main following functionalities: register, login and make
 
 Technologies:
 
--   Language: JavaScript (node.js v20.14.0)
--   Database: MySQL
--   Docker
+- Language: JavaScript (node.js v20.16.0)
+- Database: MySQL
+- Docker
 
 ---
 
@@ -57,7 +55,7 @@ cd Personal-Finance-Advisor
 Run application using docker
 
 ```
-docker compose up
+npx tsc && docker compose up -d
 ```
 
 ---
@@ -66,6 +64,14 @@ Stop application using docker
 
 ```
 docker compose down
+```
+
+---
+
+Test code
+
+```
+npm run test
 ```
 
 ## 3. API Documentation
@@ -77,15 +83,14 @@ Base URL
 
 ### User registration
 
--   Endpoint: `/api/register`
--   Method: `POST`
+- Endpoint: `/api/v1/users/register`
+- Method: `POST`
 
 Request body:
 
 ```json
 {
 	"username": "string",
-	"email": "string",
 	"password": "string"
 }
 ```
@@ -94,13 +99,14 @@ Response body:
 
 ```json
 {
-	"message": "User registered successfully",
+	"message": "string",
 	"user": {
 		"user_id": "integer",
 		"username": "string",
-		"email": "string",
+		"hash": "string",
 		"created_at": "datetime"
-	}
+	},
+	"token": "string"
 }
 ```
 
@@ -114,8 +120,8 @@ Response body:
 
 ### User login
 
--   Endpoint: `/api/login`
--   Method: `POST`
+- Endpoint: `/api/v1/users/login`
+- Method: `POST`
 
 Request body:
 
@@ -130,6 +136,7 @@ Response body:
 
 ```json
 {
+	"message": "string",
 	"token": "string"
 }
 ```
@@ -141,33 +148,10 @@ Response body:
 
 ---
 
-### Get user profile
+### Delete user account
 
--   Endpoint: `/api/profile`
--   Method: `GET`
-
-Request header:
-
-```
-Authorization: Bearer <token>
-```
-
-Response body:
-
-```json
-{
-	"user_id": "integer",
-	"username": "string",
-	"email": "string"
-}
-```
-
----
-
-### Update user profile
-
--   Endpoint: `/api/profile`
--   Method: `PATCH`
+- Endpoint: `/api/v1/users/deleteAccount`
+- Method: `DELETE`
 
 Request header:
 
@@ -179,7 +163,7 @@ Request body:
 
 ```json
 {
-	"email": "string"
+	"username": "string"
 }
 ```
 
@@ -187,26 +171,63 @@ Response body:
 
 ```json
 {
-	"message": "Profile updated successfully",
-	"user": {
-		"user_id": "integer",
-		"username": "string",
-		"email": "string"
+	"message": "string"
+}
+```
+
+| Status code | Message      |
+| ----------- | ------------ |
+| 400         | Invalid data |
+| 200         | OK           |
+
+---
+
+### Create an offer
+
+- Endpoint: `/api/offers`
+- Method: `POST`
+
+Request header:
+
+```
+Authorization: Bearer <token>
+```
+
+Request body:
+
+```
+"salary": "number",
+"currency_symbol": "string",
+"loan_term": "number"
+
+```
+
+Response body:
+
+```json
+{
+	"message": "string",
+	"offer": {
+		"offer_id": "number",
+		"currency_symbol": "string",
+		"loan_term": "number",
+		"salary": "number",
+		"loan_amount": "number",
+		"total_loan_cost": "number",
+		"total_interest": "number",
+		"payment_amount": "number",
+		"created_at": "string",
+		"user_id": "number"
 	}
 }
 ```
 
-| Status code | Message      |
-| ----------- | ------------ |
-| 400         | Invalid data |
-| 200         | OK           |
-
 ---
 
-### Create a loan offer
+### Update a offer
 
--   Endpoint: `/api/loans`
--   Method: `POST`
+- Endpoint: `/api/offers/:offerId`
+- Method: `PUT`
 
 Request header:
 
@@ -216,56 +237,112 @@ Authorization: Bearer <token>
 
 Request body:
 
-```json
-{
-	"salary": "float",
-	"currency": "string",
-	"loan_term": "integer (months)",
-	"APR": "float"
-}
+```
+"salary": "number",
+"currency_symbol": "string",
+"loan_term": "number"
+
 ```
 
 Response body:
 
 ```json
 {
-	"offer_id": "integer",
-	"salary": "float",
-	"currency": "string",
-	"term": "integer (months)",
-	"APR": "float",
-	"max_value": "float",
-	"installment": "float",
-	"total_interest": "float",
-	"user_id": "integer"
+	"message": "string",
+	"offer": {
+		"offer_id": "number",
+		"currency_symbol": "string",
+		"loan_term": "number",
+		"salary": "number",
+		"loan_amount": "number",
+		"total_loan_cost": "number",
+		"total_interest": "number",
+		"payment_amount": "number",
+		"created_at": "string",
+		"user_id": "number"
+	}
 }
 ```
 
-| Status code | Message      |
-| ----------- | ------------ |
-| 400         | Invalid data |
-| 200         | OK           |
+| Parameter | Type   | Required | Description     |
+| --------- | ------ | -------- | --------------- |
+| `offerId` | number | yes      | update by offer id |
 
 ---
 
-### Get a user loan offers
+### Get all offers
 
--   Endpoints:
+- Endpoint: `/api/v1/offers`
+- Method: `GET`
 
-    -   `/api/loans`
+Request header:
 
-        | Query      | Type   | Required | Description             |
-        | ---------- | ------ | -------- | ----------------------- |
-        | `currency` | string | yes      | search by currency code |
-        | `APR`      | float  | yes      | search by APR           |
+```
+Authorization: Bearer <token>
+```
 
-    -   `/api/loans/{id}`
+Response body:
 
-        | Parameter | Type   | Required | Description        |
-        | --------- | ------ | -------- | ------------------ |
-        | `id`      | string | yes      | search by offer id |
+```
+"message": "string"
+"offer": [{
+		"offer_id": "number",
+		"currency_symbol": "string",
+		"loan_term": "number",
+		"salary": "number",
+		"loan_amount": "number",
+		"total_loan_cost": "number",
+		"total_interest": "number",
+		"payment_amount": "number",
+		"created_at": "string",
+		"user_id": "number"
+	}, ...]
+```
 
--   Method: `GET`
+---
+
+### Get an offer
+
+- Endpoint: `/api/v1/offers/:offerId`
+- Method: `GET`
+
+Request header:
+
+```
+Authorization: Bearer <token>
+```
+
+Response body:
+
+```
+{
+	"message": "string",
+	"offer": {
+		"offer_id": "number",
+		"currency_symbol": "string",
+		"loan_term": "number",
+		"salary": "number",
+		"loan_amount": "number",
+		"total_loan_cost": "number",
+		"total_interest": "number",
+		"payment_amount": "number",
+		"created_at": "string",
+		"user_id": "number"
+	}
+
+}
+```
+
+| Parameter | Type   | Required | Description     |
+| --------- | ------ | -------- | --------------- |
+| `offerId` | number | yes      | get by offer id |
+
+---
+
+### Delete an offer
+
+- Endpoint: `/api/v1/offer/:offerId`
+- Method: `DELETE`
 
 Request header:
 
@@ -277,31 +354,20 @@ Response body:
 
 ```json
 {
-  "loan_offers": [{"offer_id": "integer",
-  "salary":  "float",
-  "currency": "string",
-  "loan_term": "integer (months)",
-  "APR": "float",
-  "max_value": "float",
-  "installment_amount": "float",
-  "total_interest": "float",
-  "user_id": "integer"}, ...]
+	"message": "string"
 }
 ```
 
+| Parameter | Type   | Required | Description        |
+| --------- | ------ | -------- | ------------------ |
+| `offerId` | number | yes      | delete by offer id |
+
 ---
 
-### Delete user loan offer
+### Get all currencies
 
--   Endpoint:
-
-    -   `/api/loans/{id}`
-
-        | Parameter | Type   | Required | Description        |
-        | --------- | ------ | -------- | ------------------ |
-        | `id`      | string | yes      | delete by offer id |
-
--   Method: `DELETE`
+- Endpoint: `/api/v1/currencies`
+- Method: `GET`
 
 Request header:
 
@@ -311,16 +377,10 @@ Authorization: Bearer <token>
 
 Response body:
 
-```json
-{
-	"offer_id": "integer",
-	"salary": "float",
-	"currency": "string",
-	"loan_term": "integer (months)",
-	"APR": "float",
-	"max_value": "float",
-	"installment_amount": "float",
-	"total_interest": "float",
-	"user_id": "integer"
-}
+```
+"message": "string"
+"currencies": {
+	"usd": "10.99",
+	...
+} 
 ```

@@ -2,7 +2,7 @@
 
 ## Database view
 
-![Database schema](../assets/schema.webp)
+![Database schema](../assets/schema.jpg)
 
 ## Description
 

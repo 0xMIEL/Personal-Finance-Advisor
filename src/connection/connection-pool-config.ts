@@ -1,5 +1,5 @@
 // Import the ConnectionPoolConfig interface
-import { ConnectionPoolConfig } from './interfaces/connection-pool-config.interface.js'
+import { ConnectionPoolConfig } from './connection-pool-config.type.js'
 
 // Import environment variables
 const { DB_HOST, DB_USER, DB_DATABASE, DB_PASSWORD } = process.env
@@ -19,7 +19,7 @@ const defaultConfig: ConnectionPoolConfig = {
 	keepAliveInitialDelay: 0,
 }
 
-// Database pool configuration
+// Database pool configuration using environment variables or default values
 const connectionPoolConfig: ConnectionPoolConfig = {
 	host: DB_HOST || defaultConfig.host,
 	user: DB_USER || defaultConfig.user,

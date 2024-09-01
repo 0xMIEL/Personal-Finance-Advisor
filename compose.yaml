@@ -1,51 +1,44 @@
 name: personal-finance-advisor
 
 services:
-    mysql:
-        image: mysql:8.4.2
-        container_name: mysql
-        environment:
-            MYSQL_ROOT_PASSWORD: secret
-            MYSQL_DATABASE: personal_finance_advisor
+  mysql:
+    image: mysql:8.4.2
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: personal_finance_advisor
 
-        volumes:
-            - mysql-data:/var/lib/mysql
-            - ./db:/docker-entrypoint-initdb.d
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./db:/docker-entrypoint-initdb.d
 
-        networks:
-            - back-tier
+    networks:
+      - backend
 
-    node:
-        build: .
-        container_name: node
-        ports:
-            - '127.0.0.1:5500:5500'
+  node:
+    build: .
+    container_name: node
+    ports:
+      - '127.0.0.1:5500:5500'
 
-        environment:
-            DB_HOST: mysql
-            DB_USER: user
-            DB_DATABASE: personal_finance_advisor
-            DB_PASSWORD: password
-            PORT: 5500
+    environment:
+      DB_HOST: mysql
+      DB_USER: user
+      DB_DATABASE: personal_finance_advisor
+      DB_PASSWORD: password
+      JWT_SECRET_KEY: secret
+      PORT: 5500
 
-        volumes:
-            - npm-cache:/root/.npm
+    volumes:
+      - npm-cache:/root/.npm
+      - ./dist:/app/src
 
-        networks:
-            - back-tier
-
-        depends_on:
-            - mysql
-
-        develop:
-            watch:
-                - path: ./dist
-                  target: ./app/src
-                  action: sync+restart
+    networks:
+      - backend
 
 volumes:
-    npm-cache:
-    mysql-data:
+  npm-cache:
+  mysql-data:
 
 networks:
-    back-tier:
+  backend:

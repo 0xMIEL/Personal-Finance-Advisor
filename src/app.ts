@@ -1,32 +1,39 @@
 import express from 'express'
-import BasicModel from './models/basic-model.js'
-import asyncWrapper from './middlewares/async-wrapper.js'
+import connectionPool from './connection/connection-pool.js'
+import userRouter from './routes/user-router.js'
+import offerRouter from './routes/offer-router.js'
+import currencyRouter from './routes/currency-router.js'
 import errorHandler from './middlewares/error-handler.js'
 
+async function cleanup() {
+	console.log('Cleaning up before exit...')
+	await connectionPool.close()
+	process.exit()
+}
+
+process.on('SIGINT', async () => {
+	console.log('SIGINT signal received: closing HTTP server')
+	await cleanup()
+})
+
+process.on('SIGTERM', async () => {
+	console.log('SIGTERM signal received: closing HTTP server')
+	await cleanup()
+})
+
 const start = () => {
-	try {
-		const app = express()
+	const app = express()
 
-		app.get(
-			'/',
-			asyncWrapper(async (req, res) => {
-				const result = await BasicModel.findBy(
-					['user_id', 'username', 'created_at'],
-					'users',
-					{
-						username: 'john_doe',
-					}
-				)
-				res.send(result)
-			})
-		)
+	app.use(express.json())
+	app.use(express.urlencoded({ extended: false }))
 
-		app.use(errorHandler)
+	app.use('/users', userRouter)
+	app.use('/offers', offerRouter)
+	app.use('/currencies', currencyRouter)
 
-		app.listen(5500)
-	} catch (error) {
-		console.log('Error: ', error)
-	}
+	app.use(errorHandler)
+
+	app.listen(5500)
 }
 
 start()

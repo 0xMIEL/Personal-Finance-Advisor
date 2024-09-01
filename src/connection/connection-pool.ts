@@ -1,11 +1,12 @@
+// Import necessary modules and utilities
 import mysql from 'mysql2/promise'
-import Utilities from '../utilities/utilities.js'
-import { ConnectionPoolConfig } from './interfaces/connection-pool-config.interface.js'
 import connectionPoolConfig from './connection-pool-config.js'
+import Utilities from '../utilities/utilities.js'
 import {
 	DatabaseConnectionError,
 	DatabaseQueryError,
 } from '../errors/database-errors.js'
+import { ConnectionPoolConfig } from './connection-pool-config.type.js'
 
 // Manages and maintains a pool of MySQL database connections.
 class ConnectionPool {
@@ -50,17 +51,20 @@ class ConnectionPool {
 	// Releases the connection back to the pool after execution.
 	async executeQuery(
 		query: string,
-		args: any[] // Array of arguments for the SQL query
+		args?: any[] // Array of arguments for the SQL query
 	): Promise<mysql.QueryResult> {
 		const connection = await this.getConnection()
 		try {
 			const [results] = await connection.execute(query, args)
 			return results
 		} catch (error) {
-			// throw new DatabaseQueryError(
-			// 	'An error occurred while executing the query.'
-			// )
-			throw error
+			if (error instanceof Error) {
+				throw new DatabaseQueryError(error.message)
+			}
+
+			throw new DatabaseQueryError(
+				'Unexpected error occurred while executing a query.'
+			)
 		} finally {
 			connection.release() // Release the connection back to the pool
 		}
@@ -71,7 +75,7 @@ class ConnectionPool {
 		try {
 			await this.connectionPool.end()
 		} catch (error) {
-			throw new DatabaseConnectionError(`Failed to close the connection pool.`)
+			throw new DatabaseConnectionError('Failed to close the connection pool.')
 		}
 	}
 }
