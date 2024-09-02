@@ -19,11 +19,9 @@ vi.mock('../../models/offer-model.js')
 vi.mock('../../models/currency-model.js')
 vi.mock('../../services/loan-calculator.js')
 
-// Create Express app and apply middleware
 const app = express()
 app.use(express.json())
 
-// Mock Authentication Middleware
 const mockAuthMiddleware = (
 	req: Request,
 	res: ResponseWithUser,
@@ -33,7 +31,6 @@ const mockAuthMiddleware = (
 	next()
 }
 
-// Register middleware and routes
 app.use(mockAuthMiddleware)
 app.post('/offers', createOffer)
 app.put('/offers/:offerId', updateOffer)

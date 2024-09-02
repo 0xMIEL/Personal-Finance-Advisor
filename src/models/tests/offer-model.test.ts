@@ -181,7 +181,7 @@ describe('OfferModel', () => {
 				fieldCount: 0,
 				changedRows: 0,
 				warningCount: 0,
-				info: '', // Add additional required properties
+				info: '',
 				serverStatus: 2,
 				warningStatus: 0,
 			} as mysql.ResultSetHeader)
@@ -195,7 +195,7 @@ describe('OfferModel', () => {
 				fieldCount: 0,
 				changedRows: 0,
 				warningCount: 0,
-				info: '', // Add additional required properties
+				info: '',
 				serverStatus: 2,
 				warningStatus: 0,
 			})
@@ -239,7 +239,7 @@ describe('OfferModel', () => {
 				fieldCount: 0,
 				changedRows: 0,
 				warningCount: 0,
-				info: '', // Add additional required properties
+				info: '',
 				serverStatus: 2,
 				warningStatus: 0,
 			} as mysql.ResultSetHeader)
@@ -252,7 +252,7 @@ describe('OfferModel', () => {
 				fieldCount: 0,
 				changedRows: 0,
 				warningCount: 0,
-				info: '', // Add additional required properties
+				info: '',
 				serverStatus: 2,
 				warningStatus: 0,
 			})

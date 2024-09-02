@@ -1,8 +1,7 @@
-// src/models/tests/currency-model.test.ts
 import mysql from 'mysql2/promise'
 import { describe, it, expect, vi, beforeEach } from 'vitest'
-import CurrencyModel from '../currency-model.js' // Adjust the import path as needed
-import connectionPool from '../../connection/connection-pool.js' // Adjust the import path as needed
+import CurrencyModel from '../currency-model.js'
+import connectionPool from '../../connection/connection-pool.js'
 
 interface MockRowDataPacket extends mysql.RowDataPacket {
 	currency_symbol: string
@@ -17,7 +16,6 @@ describe('CurrencyModel', () => {
 
 	describe('getAllPossibleCurrencies', () => {
 		it('should return all possible currencies', async () => {
-			// Mocking executeQuery to return test data
 			vi.spyOn(connectionPool, 'executeQuery').mockResolvedValue([
 				{ currency_symbol: 'USD', apr: 1.5 } as MockRowDataPacket,
 				{ currency_symbol: 'EUR', apr: 2.0 } as MockRowDataPacket,

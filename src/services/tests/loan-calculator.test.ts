@@ -1,4 +1,3 @@
-// loanCalculator.test.ts
 import { describe, it, expect } from 'vitest'
 import LoanCalculator from '../loan-calculator.js'
 
@@ -6,7 +5,7 @@ describe('LoanCalculator', () => {
 	it('should calculate loan terms correctly', () => {
 		const salary = 5000
 		const apr = 5
-		const loanTerm = 24 // 24 months (2 years)
+		const loanTerm = 24
 
 		const result = LoanCalculator.calculateLoan(salary, apr, loanTerm)
 
