@@ -4,6 +4,12 @@ import type { User } from '../models/user-model.js'
 // Secret key for signing and verifying JWTs, defaulting to 'secret' if not set in environment variables
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY || 'secret'
 
+interface DecodedTokenObject {
+	userId: number
+	username: string
+	expiresIn: number
+}
+
 class UserTokenManager {
 	// Generates a JWT for a given user record
 	// Default expiration time is 2419200 seconds (4 weeks)
@@ -18,13 +24,13 @@ class UserTokenManager {
 	}
 
 	// Decodes a JWT without verifying its signature
-	static decodeToken(token: string): Record<string, any> {
-		return CasperJWT.decode(token) as Record<string, any>
+	static decodeToken(token: string): DecodedTokenObject {
+		return CasperJWT.decode(token) as DecodedTokenObject
 	}
 
 	// Verifies a JWT's signature and returns the decoded token if valid
-	static verifyToken(token: string): Record<string, any> {
-		return CasperJWT.verify(token, JWT_SECRET_KEY) as Record<string, any>
+	static verifyToken(token: string): DecodedTokenObject {
+		return CasperJWT.verify(token, JWT_SECRET_KEY) as DecodedTokenObject
 	}
 }
 

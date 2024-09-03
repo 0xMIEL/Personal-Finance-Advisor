@@ -17,7 +17,7 @@ class Validator {
 	private static validateWithRegex(
 		regex: RegExp,
 		fieldName: string, // Name of the field being validated (e.g., 'username', 'password')
-		value: any,
+		value: string,
 		expectedType: string = 'string' // Expected data type of the value
 	): boolean {
 		if (value === undefined) {
@@ -33,12 +33,12 @@ class Validator {
 	}
 
 	// Validates a username using the USERNAME_REGEX pattern
-	static validateUsername(username: any): boolean {
+	static validateUsername(username: string): boolean {
 		return this.validateWithRegex(this.USERNAME_REGEX, 'username', username)
 	}
 
 	// Validates a password using the PASSWORD_REGEX pattern
-	static validatePassword(password: any): boolean {
+	static validatePassword(password: string): boolean {
 		return this.validateWithRegex(this.PASSWORD_REGEX, 'password', password)
 	}
 }

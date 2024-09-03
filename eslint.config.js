@@ -1,21 +1,24 @@
 import globals from 'globals'
 import pluginJs from '@eslint/js'
 import tseslint from '@typescript-eslint/eslint-plugin'
+import tsParser from '@typescript-eslint/parser'
 
 export default [
 	{
 		files: ['**/*.{js,mjs,cjs,ts}'], // Target JavaScript and TypeScript files
 		languageOptions: {
-			globals: globals.browser, // Define global variables for the browser environment
+			parser: tsParser, // Use TypeScript parser
+			globals: {
+				...globals.node, // Define global variables for Node.js environment
+				...globals.browser, // Include browser globals if needed
+			},
 		},
-		extends: [
-			// Extend recommended JavaScript rules
-			pluginJs.configs.recommended,
-			// Extend recommended TypeScript rules
-			...tseslint.configs.recommended,
-		],
+		plugins: {
+			'@typescript-eslint': tseslint,
+		},
 		rules: {
-			// Override TypeScript rule to ignore unused variables in catch clauses
+			...pluginJs.configs.recommended.rules, // Include recommended JS rules directly
+			...tseslint.configs.recommended.rules, // Include recommended TS rules directly
 			'@typescript-eslint/no-unused-vars': [
 				'error',
 				{
@@ -23,6 +26,7 @@ export default [
 					args: 'after-used',
 					ignoreRestSiblings: true,
 					caughtErrors: 'none', // Ignore unused variables in catch clauses
+					argsIgnorePattern: 'next'
 				},
 			],
 		},

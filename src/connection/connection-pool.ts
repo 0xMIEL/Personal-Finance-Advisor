@@ -51,7 +51,7 @@ class ConnectionPool {
 	// Releases the connection back to the pool after execution.
 	async executeQuery(
 		query: string,
-		args?: any[] // Array of arguments for the SQL query
+		args?: (string | number)[] // Array of arguments for the SQL query
 	): Promise<mysql.QueryResult> {
 		const connection = await this.getConnection()
 		try {
